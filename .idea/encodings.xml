@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" native2AsciiForPropertiesFiles="true" defaultCharsetForPropertiesFiles="UTF-8">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/shop/ssm/aop/MyAspect.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/shop/ssm/dao/impl/JedisClientCluster.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/shop/ssm/dao/impl/JedisClientSingle.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/shop/ssm/mapper/AuthorityMapper.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/shop/ssm/mapper/CommentsMapper.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/shop/ssm/mapper/PostMapper.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/shop/ssm/mapper/UserMapper.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/shop/ssm/pojo/Authority.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/shop/ssm/pojo/Comments.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/shop/ssm/pojo/CommentsExample.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/shop/ssm/pojo/Function.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/shop/ssm/pojo/Post.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/shop/ssm/pojo/PostExample.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/shop/ssm/pojo/User.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/shop/ssm/utils/Md5.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mapping/AuthorityMapper.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mapping/CommentsMapper.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mapping/PostMapper.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mapping/UserMapper.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/js/jquery-3.2.1.min.js" charset="GBK" />
+    <file url="PROJECT" charset="UTF-8" />
+  </component>
+</project>
