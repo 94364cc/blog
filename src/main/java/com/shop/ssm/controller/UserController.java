@@ -30,15 +30,14 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "user",method = RequestMethod.GET)
+    @RequestMapping(value = "login",method = RequestMethod.GET)
     @ResponseBody
     public Message login(String userName,String password,HttpSession httpSession){
         Message message= userService.login(userName,password);
         User user= (User) message.getData();
         if(message.getStatus().equals("1")){
             httpSession.setAttribute("nick",user.getNick());
-            //放到redis里面去存，暂时先这么写
-            httpSession.setAttribute("status","1");
+            httpSession.setAttribute("userId",user.getId());
         }
         message.setData(null);
         return message;

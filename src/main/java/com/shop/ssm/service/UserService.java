@@ -4,7 +4,6 @@ import com.shop.ssm.aop.PrivlegeInfo;
 import com.shop.ssm.pojo.Message;
 import com.shop.ssm.pojo.User;
 import org.springframework.stereotype.Service;
-import scala.util.parsing.combinator.testing.Str;
 
 import java.util.List;
 

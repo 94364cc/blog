@@ -11,17 +11,9 @@ public class User {
 
     private String nick;
 
-    private String userPhone;
-
-    private String userEmail;
-
-    private String salt;
-
     private Date createTime;
 
     private Date modifyTime;
-
-    private int isDelete;
 
     public Integer getId() {
         return id;
@@ -55,30 +47,6 @@ public class User {
         this.nick = nick == null ? null : nick.trim();
     }
 
-    public String getUserPhone() {
-        return userPhone;
-    }
-
-    public void setUserPhone(String userPhone) {
-        this.userPhone = userPhone == null ? null : userPhone.trim();
-    }
-
-    public String getUserEmail() {
-        return userEmail;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail == null ? null : userEmail.trim();
-    }
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt == null ? null : salt.trim();
-    }
-
     public Date getCreateTime() {
         return createTime;
     }
@@ -95,11 +63,4 @@ public class User {
         this.modifyTime = modifyTime;
     }
 
-    public int getIsDelete() {
-        return isDelete;
-    }
-
-    public void setIsDelete(int isDelete) {
-        this.isDelete = isDelete;
-    }
 }

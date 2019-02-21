@@ -16,15 +16,22 @@ import java.util.List;
  */
 @Service
 public class AuthServiceImpl implements AuthService {
-    @Autowired
-    public AuthorityMapper authorityMapper;
-
     public void insertAuth(Integer userId, List<Integer> functionIds) {
-        authorityMapper.insert(userId,functionIds);
+
     }
 
-    @PrivlegeInfo(name="getFunctions")
-    public List<Function> getFunctionsByUserId(String userId){
-        return authorityMapper.getFunctionsByUserId(userId);
+    public List<Function> getFunctionsByUserId(String userId) {
+        return null;
     }
+//    @Autowired
+//    public AuthorityMapper authorityMapper;
+//
+//    public void insertAuth(Integer userId, List<Integer> functionIds) {
+//        authorityMapper.insert(userId,functionIds);
+//    }
+//
+//    @PrivlegeInfo(name="getFunctions")
+//    public List<Function> getFunctionsByUserId(String userId){
+//        return authorityMapper.getFunctionsByUserId(userId);
+//    }
 }

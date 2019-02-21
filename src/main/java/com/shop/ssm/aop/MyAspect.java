@@ -3,6 +3,8 @@ package com.shop.ssm.aop;
 import com.alibaba.fastjson.JSON;
 import com.shop.ssm.expection.CustomException;
 import com.shop.ssm.service.AuthService;
+import com.shop.ssm.service.LogService;
+import com.shop.ssm.service.UserService;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -16,6 +18,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.rmi.AccessException;
@@ -24,37 +27,18 @@ import java.util.*;
 /**
  * Created by Administrator on 2019/1/17.
  */
-//@Aspect
-//@Component
+@Aspect
+@Component
 public class MyAspect {
-//    @Autowired
-//    AuthService service;
-//    final static Map<String,Integer> CACHE=new HashMap<String, Integer>(){{
-//       put("/user",1);
-//        put("/authority",2);
-//    }};
+    @Autowired
+    LogService logService;
 
-//    @Pointcut("execution(* com.shop.ssm.service.impl.*.insert*(..)) " +
-//            "|| execution(* com.shop.ssm.service.impl.*.update*(..))" +
-//            "|| execution(* com.shop.ssm.service.impl.*.delete*(..))"
-//    )
-//    public void myMethod() {};
-
-
-//    //所有的方法，如果没有在数据库中注册，会自动注册
-//    @Pointcut("execution(* com.shop.ssm.controller.*.*(..)) && !execution(*  com.shop.ssm.controller.LoginContrller.*(..)) ")
-//    public void registMethod(){};
-
-//    @Before("registMethod()")
-//    public void registMethod(JoinPoint joinPoint){
-//        HttpServletRequest request=((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
-//        HttpServletResponse response = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getResponse();
-//        String url=request.getRequestURI().toString();
-//        String userId= (String) request.getSession().getAttribute("userId");
-////        if(userId==null || userId.equals("")) {
-////
-////        }
-//    }
+    @Pointcut("execution(* com.shop.ssm.service.impl.*.insert*(..)) " +
+            "|| execution(* com.shop.ssm.service.impl.*.update*(..))" +
+            "|| execution(* com.shop.ssm.service.impl.*.delete*(..))"+
+            "|| execution(* com.shop.ssm.controller.UserController.login(..))"
+    )
+    public void myMethod() {};
 
 
 
@@ -102,10 +86,16 @@ public class MyAspect {
 //        System.out.println("after myMthod");
 //    }
 //
-//    @AfterReturning("execution(* com.shop.ssm.service.impl.*.insert*(..))")
-//    public void afterReturning(){
-//        System.out.println("after return");
-//    }
+    @After("myMethod()")
+    public void afterReturning(JoinPoint joinPoint){
+        HttpServletRequest request= ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        HttpSession session = (HttpSession) request.getSession();
+        Integer userId = (Integer) session.getAttribute("userId");
+        String ip=getRemoteHost(request);
+        String methodName=getSourceMethod(joinPoint).getName();
+        System.out.println("userId="+userId+";ip"+ip+";methodName="+methodName);
+        System.out.println("aop to insert log");
+    }
 //
 //    @AfterThrowing("execution(* com.shop.ssm.service.impl.*.insert*(..))")
 //    public void afterThrowing(){
@@ -144,17 +134,6 @@ public class MyAspect {
             ip = request.getRemoteAddr();
         }
         return "0:0:0:0:0:0:0:1".equals(ip) ? "127.0.0.1" : ip;
-    }
-    /**
-     * 返回数据
-     * @param retVal
-     * @return
-     */
-    private String postHandle(Object retVal) {
-        if(null == retVal){
-            return "";
-        }
-        return JSON.toJSONString(retVal);
     }
 
     /**
