@@ -4,13 +4,41 @@
   <resultMap id="BaseResultMap" type="com.shop.ssm.pojo.Log" >
     <id column="log_id" property="logId" jdbcType="INTEGER" />
     <result column="user_id" property="userId" jdbcType="INTEGER" />
-    <result column="ip" property="ip" jdbcType="VARCHAR" />
-    <result column="event" property="event" jdbcType="VARCHAR" />
+    <result column="request_type" property="requestType" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
 
+
   <insert id="insert" parameterType="com.shop.ssm.pojo.Log">
-    insert into log(log_id,user_id,ip,event,create_time)
-    values(#{logId},#{userId},#{ip},#{event},#{createTime})
+    insert into log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="requestType !=null">
+        request_type,
+      </if>
+      <if test="url!=null">
+        url,
+      </if>
+      <if test="createTime !=null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="requestType !=null">
+        #{requestType,jdbcType=VARCHAR},
+      </if>
+      <if test="url!=null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime !=null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
   </insert>
 </mapper>

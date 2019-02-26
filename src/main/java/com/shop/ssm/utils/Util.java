@@ -78,16 +78,12 @@ public class Util {
         return null;
     }
 
-    public static void main(String[] args) {
-        User user=new User();
-        user.setId(1);
-        user.setNick("nick");
-        user.setPassword("pwd");
-        byte[] serName=Util.serialize(user);
-        System.out.println(serName);
-        User user1= (User) Util.unserialize(serName);
-        System.out.println(user1.getId());
-        System.out.println(user1.getNick());
+    //判断空值
+    public static Boolean isNotNull(Object... objs){
+        for(int i=0;i<objs.length;i++){
+            if(objs[i]==null) return false;
+        }
+        return true;
     }
 
 }

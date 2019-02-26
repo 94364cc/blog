@@ -47,7 +47,7 @@ public class BlogServiceImpl implements BlogService{
 //        postMapper.insert(post);
 //        //不等于null说明存储成功,将增加的结果写入redis
 //        if(post.getId()!=null){
-//            byte[] bytes=Util.serialize(post);
+//            byte[] bytes=utils.serialize(post);
 //            jedisClient.setObject(post.getId()+"",bytes);
 //            //有序存储postId,方便顺序查找
 //            jedisClient.lpush(POST_LIST, post.getId() + "");

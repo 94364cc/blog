@@ -12,8 +12,9 @@ import java.util.List;
  */
 public interface UserService {
     //注册
-    public Message insertUser(User user);
+    public Message insert(User user);
     //登录
     public Message login(String username,String pwd);
-    public Message updateUserInfo(User user);
+    public Message update(User user);
+    public Message delete(Integer userId);
 }

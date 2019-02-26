@@ -38,4 +38,11 @@ public class Message {
         this.data = data;
     }
 
+    public static Message Ok(){
+        return new Message("200","success",null);
+    }
+
+    public static Message of(ResultCode resultCode) {
+        return new Message(resultCode.getCode(),resultCode.getMsg(),null);
+    }
 }

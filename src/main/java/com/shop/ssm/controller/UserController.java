@@ -3,20 +3,14 @@ package com.shop.ssm.controller;
 import com.shop.ssm.pojo.Message;
 import com.shop.ssm.pojo.User;
 import com.shop.ssm.service.UserService;
-import org.apache.log4j.Logger;
+import com.shop.ssm.utils.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.ws.rs.POST;
-import java.util.List;
 
 @RestController
 public class UserController {
@@ -26,7 +20,7 @@ public class UserController {
     @RequestMapping(value = "user",method = RequestMethod.POST)
     @ResponseBody
     public Message regist(User user){
-        return userService.insertUser(user);
+        return userService.insert(user);
     }
 
 
@@ -35,7 +29,7 @@ public class UserController {
     public Message login(String userName,String password,HttpSession httpSession){
         Message message= userService.login(userName,password);
         User user= (User) message.getData();
-        if(message.getStatus().equals("1")){
+        if(message.getStatus().equals(Constant.SUCCESS)){
             httpSession.setAttribute("nick",user.getNick());
             httpSession.setAttribute("userId",user.getId());
         }
@@ -46,6 +40,12 @@ public class UserController {
     @RequestMapping(value = "user",method = RequestMethod.PUT)
     @ResponseBody
     public Message update(User user){
-        return userService.updateUserInfo(user);
+        return userService.update(user);
+    }
+
+    @RequestMapping(value = "user",method = RequestMethod.DELETE)
+    @ResponseBody
+    public Message delete(Integer userId){
+        return userService.delete(userId);
     }
 }

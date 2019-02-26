@@ -15,6 +15,8 @@ public class User {
 
     private Date modifyTime;
 
+    private Integer isDelete;
+
     public Integer getId() {
         return id;
     }
@@ -63,4 +65,11 @@ public class User {
         this.modifyTime = modifyTime;
     }
 
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
+    }
 }

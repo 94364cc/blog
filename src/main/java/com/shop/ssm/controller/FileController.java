@@ -20,41 +20,41 @@ import java.io.*;
 @Controller
 @RequestMapping("/file")
 public class FileController {
-    @Resource
-    private FileService fileService;
-    /**
-     * 实现上传文件
-     * @param myfile
-     * @param request
-     * @return
-     */
-    @RequestMapping("/upload")
-    @ResponseBody
-    public String upload(@RequestParam("myfile")MultipartFile myfile,HttpServletRequest request){
-        String filename=myfile.getOriginalFilename();
-        String path=request.getSession().getServletContext().getRealPath("upload");
-        File dir=new File(path,filename);
-        if(!dir.exists()){
-            dir.mkdirs();
-        }
-        try {
-            //MultipartFile自带的解析方法
-            myfile.transferTo(dir);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "ok";
-    }
-
-    /**
-     *
-     * @param request
-     * @param response
-     */
-    @RequestMapping("/download")
-    @ResponseBody
-    public void download(HttpServletRequest request,HttpServletResponse response) throws IOException {
-        String download =request.getSession().getServletContext().getRealPath("/upload");
-        FileUtil.downFile("test.docx", ".docx", download, response);
-    }
+//    @Resource
+//    private FileService fileService;
+//    /**
+//     * 实现上传文件
+//     * @param myfile
+//     * @param request
+//     * @return
+//     */
+//    @RequestMapping("/upload")
+//    @ResponseBody
+//    public String upload(@RequestParam("myfile")MultipartFile myfile,HttpServletRequest request){
+//        String filename=myfile.getOriginalFilename();
+//        String path=request.getSession().getServletContext().getRealPath("upload");
+//        File dir=new File(path,filename);
+//        if(!dir.exists()){
+//            dir.mkdirs();
+//        }
+//        try {
+//            //MultipartFile自带的解析方法
+//            myfile.transferTo(dir);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return "ok";
+//    }
+//
+//    /**
+//     *
+//     * @param request
+//     * @param response
+//     */
+//    @RequestMapping("/download")
+//    @ResponseBody
+//    public void download(HttpServletRequest request,HttpServletResponse response) throws IOException {
+//        String download =request.getSession().getServletContext().getRealPath("/upload");
+//        FileUtil.downFile("test.docx", ".docx", download, response);
+//    }
 }

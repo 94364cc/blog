@@ -7,11 +7,33 @@ public class Log {
 
     private Integer userId;
 
-    private String ip;
+    private String requestType;
 
-    private String event;
-
+    private String url;
     private Date createTime;
+
+    public Log(Integer userId, String requestType, String url, Date createTime) {
+        this.userId = userId;
+        this.requestType = requestType;
+        this.url = url;
+        this.createTime = createTime;
+    }
+
+    public String getRequestType() {
+        return requestType;
+    }
+
+    public void setRequestType(String requestType) {
+        this.requestType = requestType;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     public Integer getLogId() {
         return logId;
@@ -27,22 +49,6 @@ public class Log {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
-    }
-
-    public String getIp() {
-        return ip;
-    }
-
-    public void setIp(String ip) {
-        this.ip = ip == null ? null : ip.trim();
-    }
-
-    public String getEvent() {
-        return event;
-    }
-
-    public void setEvent(String event) {
-        this.event = event == null ? null : event.trim();
     }
 
     public Date getCreateTime() {

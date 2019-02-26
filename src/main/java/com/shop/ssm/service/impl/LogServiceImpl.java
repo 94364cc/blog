@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class LogServiceImpl implements LogService {
     @Autowired
     LogMapper logMapper;
-    public void insertLog(Log log) {
+    public void addLog(Log log) {
         logMapper.insert(log);
     }
 }

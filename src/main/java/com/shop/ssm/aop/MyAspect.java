@@ -1,10 +1,8 @@
 package com.shop.ssm.aop;
 
 import com.alibaba.fastjson.JSON;
-import com.shop.ssm.expection.CustomException;
-import com.shop.ssm.service.AuthService;
+import com.shop.ssm.pojo.Log;
 import com.shop.ssm.service.LogService;
-import com.shop.ssm.service.UserService;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -16,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.jms.Session;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -39,6 +38,18 @@ public class MyAspect {
             "|| execution(* com.shop.ssm.controller.UserController.login(..))"
     )
     public void myMethod() {};
+
+
+    @Pointcut("execution(* com.shop.ssm.*.*.*(..))  && !execution(* com.shop.ssm.controller.*.login(..))")
+    public void allMethod(){};
+
+//    @Before("allMethod()")
+//    public void isLogin(){
+//        HttpServletRequest request=((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+//        HttpSession session= (HttpSession) request.getSession();
+//        if(request.getRequestURL().toString().contains("login")) return;
+//        if(session.getAttribute("userId")==null) throw new RuntimeException("user have not logined");
+//    }
 
 
 
@@ -86,18 +97,18 @@ public class MyAspect {
 //        System.out.println("after myMthod");
 //    }
 //
-    @After("myMethod()")
-    public void afterReturning(JoinPoint joinPoint){
-        HttpServletRequest request= ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        HttpSession session = (HttpSession) request.getSession();
-        Integer userId = (Integer) session.getAttribute("userId");
-        String ip=getRemoteHost(request);
-        String methodName=getSourceMethod(joinPoint).getName();
-        System.out.println("userId="+userId+";ip"+ip+";methodName="+methodName);
-        System.out.println("aop to insert log");
-    }
-//
-//    @AfterThrowing("execution(* com.shop.ssm.service.impl.*.insert*(..))")
+//    @After("myMethod()")
+//    public void afterReturning(JoinPoint joinPoint){
+//        HttpServletRequest request= ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+//        String requestType=request.getMethod();
+//        String url=request.getRequestURL().toString();
+//        HttpSession session = (HttpSession) request.getSession();
+//        Integer userId = (Integer) session.getAttribute("userId");
+//        logService.addLog(new Log(userId,requestType,url,new Date()));
+//    }
+
+
+//    @AfterThrowing("execution(* com.shop.ssm.*.*.*(..))")
 //    public void afterThrowing(){
 //        System.out.println("after throwing");
 //    }

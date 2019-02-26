@@ -7,4 +7,5 @@ public interface UserMapper {
     User selectByUserName(@Param("userName")String userName);
     void insert(User user);
     User selectOneByExample(User user);
+    void updateByExampleSelective(User user);
 }
