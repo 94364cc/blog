@@ -5,10 +5,7 @@ import com.shop.ssm.pojo.User;
 import com.shop.ssm.service.UserService;
 import com.shop.ssm.utils.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -43,9 +40,9 @@ public class UserController {
         return userService.update(user);
     }
 
-    @RequestMapping(value = "user",method = RequestMethod.DELETE)
+    @RequestMapping(path  = "/user/{id}",method = RequestMethod.DELETE)
     @ResponseBody
-    public Message delete(Integer userId){
-        return userService.delete(userId);
+    public Message delete(@PathVariable(value = "id") Integer id){
+        return userService.delete(id);
     }
 }

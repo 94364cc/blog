@@ -7,27 +7,31 @@ public enum  ResultCode {
     /**
      * 成功
      */
-    SUCCESS("0", "success"),
+    SUCCESS("200", "success"),
 
     /**
      * 未知错误
      */
-    UNKNOWN_ERROR("0x10001", "unkonwn error"),
+    UNKNOWN_ERROR("1001", "unkonwn error"),
 
     /**
      * 用户名错误或不存在
      */
-    USERNAME_ERROR("0x10002", "username error or does not exist"),
-
-    /**
-     * 密码错误
-     */
-    PASSWORD_ERROR("0x10003", "password error"),
+    USERNAME_OR_PASSWORD_ERROR("1002", "username or  password is not available"),
 
     /**
      * 用户名不能为空
      */
-    USERNAME_EMPTY("0x10004", "username can not be empty");
+    USERNAME_OR_PASSWORD_EMPTY("1003", "username or password can not be empty"),
+    /**
+     * 用户名已经存在
+     */
+    USERNAME_ALREADY_EXISTS("1004", "username is already exist"),
+    /**
+     * 用户名已经存在
+     */
+    PASSWORD_INVAILD("1006", "password must include word and number!");
+
 
     /**
      * 结果码

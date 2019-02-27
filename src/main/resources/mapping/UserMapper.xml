@@ -26,13 +26,25 @@
   <select id="selectOneByExample" parameterType="com.shop.ssm.pojo.User" resultType="com.shop.ssm.pojo.User" >
     select <include refid="Base_Column_List"></include> from USER
     <where>
-      <if test="userName!=null">
-        user_name=#{userName,jdbcType=VARCHAR}
-      </if>
-      <if test="password!=null">
-        and password=#{password,jdbcType=VARCHAR}
-      </if>
+      <trim prefixOverrides="and">
+        <if test="userName!=null">
+          and user_name=#{userName,jdbcType=VARCHAR}
+        </if>
+        <if test="password!=null">
+          and password=#{password,jdbcType=VARCHAR}
+        </if>
+        <if test="id!=null">
+           and id=#{id,jdbcType=INTEGER}
+        </if>
+      </trim>
         and is_delete=0
+    </where>
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select <include refid="Base_Column_List"/> from USER
+    <where>
+      id=#{id,jdbcType=INTEGER}
     </where>
   </select>
 

@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 
 public interface UserMapper {
     User selectByUserName(@Param("userName")String userName);
+    User selectByPrimaryKey(@Param("id") Integer id);
     void insert(User user);
     User selectOneByExample(User user);
     void updateByExampleSelective(User user);
