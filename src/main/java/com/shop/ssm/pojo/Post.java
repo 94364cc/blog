@@ -5,19 +5,11 @@ public class Post {
 
     private Integer userId;
 
-    private String block;
-
     private String title;
 
-    private String content;
+    private String label;
 
-    public Post(Integer id, Integer userId, String block, String title, String content) {
-        this.id = id;
-        this.userId = userId;
-        this.block = block;
-        this.title = title;
-        this.content = content;
-    }
+    private String content;
 
     public Integer getId() {
         return id;
@@ -35,20 +27,20 @@ public class Post {
         this.userId = userId;
     }
 
-    public String getBlock() {
-        return block;
-    }
-
-    public void setBlock(String block) {
-        this.block = block == null ? null : block.trim();
-    }
-
     public String getTitle() {
         return title;
     }
 
     public void setTitle(String title) {
         this.title = title == null ? null : title.trim();
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label == null ? null : label.trim();
     }
 
     public String getContent() {

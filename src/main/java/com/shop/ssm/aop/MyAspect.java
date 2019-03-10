@@ -32,9 +32,9 @@ public class MyAspect {
     @Autowired
     LogService logService;
 
-    @Pointcut("execution(* com.shop.ssm.service.impl.*.insert*(..)) " +
-            "|| execution(* com.shop.ssm.service.impl.*.update*(..))" +
-            "|| execution(* com.shop.ssm.service.impl.*.delete*(..))"+
+    @Pointcut("execution(* com.shop.ssm.controller.*.insert*(..)) " +
+            "|| execution(* com.shop.ssm.controller.*.update*(..))" +
+            "|| execution(* com.shop.ssm.controller.*.delete*(..))"+
             "|| execution(* com.shop.ssm.controller.UserController.login(..))"
     )
     public void myMethod() {};
@@ -97,15 +97,15 @@ public class MyAspect {
 //        System.out.println("after myMthod");
 //    }
 //
-//    @After("myMethod()")
-//    public void afterReturning(JoinPoint joinPoint){
-//        HttpServletRequest request= ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-//        String requestType=request.getMethod();
-//        String url=request.getRequestURL().toString();
-//        HttpSession session = (HttpSession) request.getSession();
-//        Integer userId = (Integer) session.getAttribute("userId");
-//        logService.addLog(new Log(userId,requestType,url,new Date()));
-//    }
+    @After("myMethod()")
+    public void afterReturning(JoinPoint joinPoint){
+        HttpServletRequest request= ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        String requestType=request.getMethod();
+        String url=request.getRequestURL().toString();
+        HttpSession session = (HttpSession) request.getSession();
+        Integer userId = (Integer) session.getAttribute("userId");
+        logService.addLog(new Log(userId,requestType,url,new Date()));
+    }
 
 
 //    @AfterThrowing("execution(* com.shop.ssm.*.*.*(..))")

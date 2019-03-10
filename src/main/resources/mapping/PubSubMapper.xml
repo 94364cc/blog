@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.ssm.mapper.PubSubMapper" >
+  <resultMap id="BaseResultMap" type="com.shop.ssm.pojo.PubSub" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="pub_id" property="pubId" jdbcType="INTEGER" />
+    <result column="sub_id" property="subId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List">
+      id,pub_id,sub_id
+  </sql>
+  <insert id="subscribe" parameterType="com.shop.ssm.pojo.PubSub">
+    insert into pub_sub(pub_id,sub_id) VALUES
+    (
+    #{pubId,jdbcType=INTEGER},#{subId,jdbcType=INTEGER}
+    )
+  </insert>
+
+</mapper>

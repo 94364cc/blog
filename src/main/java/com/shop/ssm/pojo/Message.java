@@ -42,6 +42,10 @@ public class Message {
         return new Message("200","success",null);
     }
 
+    public static Message Ok(Object data){
+        return new Message("200","success",data);
+    }
+
     public static Message of(ResultCode resultCode) {
         return new Message(resultCode.getCode(),resultCode.getMsg(),null);
     }

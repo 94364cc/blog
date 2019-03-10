@@ -1,13 +1,10 @@
 package com.shop.ssm.dao.impl;
 
 import com.shop.ssm.dao.JedisClient;
-import com.shop.ssm.pojo.Post;
-import com.shop.ssm.service.BlogService;
 import com.shop.ssm.utils.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
-import org.springframework.stereotype.Repository;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPubSub;

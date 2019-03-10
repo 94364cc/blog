@@ -1,9 +1,7 @@
 package com.shop.ssm.listener;
 
-import com.shop.ssm.dao.JedisClient;
-import com.shop.ssm.dao.impl.JedisClientSingle;
-import com.shop.ssm.service.BlogService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.shop.ssm.kafka.Consumer;
+import com.shop.ssm.service.PostService;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -15,18 +13,22 @@ import javax.servlet.ServletContextListener;
  */
 public class MyListener implements ServletContextListener {
     private static WebApplicationContext context;
-    private BlogService service;
+    private PostService service;
     public void contextInitialized( ServletContextEvent event) {
-        String str = null;
-        System.out.println("step into init method");
-        context= WebApplicationContextUtils.getRequiredWebApplicationContext(event.getServletContext());
-        service=context.getBean(BlogService.class);
-        new Thread(){
-            @Override
-            public void run() {
-//                service.sendEmail();
-            }
-        }.start();
+        //redis 消息队列实现
+//        String str = null;
+//        System.out.println("step into init method");
+//        context= WebApplicationContextUtils.getRequiredWebApplicationContext(event.getServletContext());
+//        service=context.getBean(PostService.class);
+//        new Thread(){
+//            @Override
+//            public void run() {
+////                service.sendEmail();
+//            }
+//        }.start();
+
+        //kafka消息队列实现
+//        new Thread(new Consumer(event)).start();
     }
 
     public void contextDestroyed(ServletContextEvent servletContextEvent) {

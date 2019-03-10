@@ -14,10 +14,12 @@ import java.util.Properties;
  *
  */
 public class ReadKafkaPropertiesUtil {
+
     /**
      * 属性
      */
     private static Properties properties;
+
     /**
      * 读取kafka.properties
      */

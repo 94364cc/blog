@@ -1,10 +1,12 @@
 package com.shop.ssm.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.shop.ssm.controller.BusinessRuntimeException;
 import com.shop.ssm.mapper.UserMapper;
 import com.shop.ssm.pojo.Message;
 import com.shop.ssm.pojo.ResultCode;
 import com.shop.ssm.pojo.User;
+import com.shop.ssm.pojo.UserVo;
 import com.shop.ssm.service.UserService;
 import com.shop.ssm.utils.Constant;
 import com.shop.ssm.utils.Util;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Zhangxq on 2016/7/15.
@@ -79,5 +82,15 @@ public class UserServiceImpl implements UserService {
         user.setModifyTime(new Date());
         userMapper.updateByExampleSelective(user);
         return Message.Ok();
+    }
+
+    public Message getUsers(UserVo userVo, int page, int size) {
+        PageHelper.startPage(page,size);
+        List<User> users=userMapper.selectUsers(userVo);
+        return Message.Ok(users);
+    }
+    public List<User> getSubsByPub(Integer pubId) {
+        List<User> subs=userMapper.getSubsByPub(pubId);
+        return subs;
     }
 }

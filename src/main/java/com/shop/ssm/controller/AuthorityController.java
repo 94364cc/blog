@@ -1,9 +1,6 @@
 package com.shop.ssm.controller;
 
-import com.shop.ssm.expection.CustomException;
-import com.shop.ssm.pojo.Function;
 import com.shop.ssm.pojo.Message;
-import com.shop.ssm.service.AuthService;
 import com.shop.ssm.utils.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
