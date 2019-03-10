@@ -30,7 +30,11 @@ public enum  ResultCode {
     /**
      * 用户名已经存在
      */
-    PASSWORD_INVAILD("1006", "password must include word and number!");
+    PASSWORD_INVAILD("1006", "password must include word and number!"),
+    /**
+     * kafka 消费报错
+     */
+    KAFKA_PROCDUCE_WRONG("2001", "something wrong happends whene send messages to kafka");
 
 
     /**
