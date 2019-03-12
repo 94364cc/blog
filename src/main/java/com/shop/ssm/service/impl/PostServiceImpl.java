@@ -1,18 +1,25 @@
 package com.shop.ssm.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.shop.ssm.mapper.PostMapper;
 import com.shop.ssm.pojo.Message;
 import com.shop.ssm.pojo.Post;
 import com.shop.ssm.pojo.User;
 import com.shop.ssm.service.PostService;
 import com.shop.ssm.service.UserService;
+import com.shop.ssm.utils.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * Created by Administrator on 2018/10/21.
@@ -25,11 +32,22 @@ public class PostServiceImpl implements PostService {
     @Autowired
     public UserService userService;
 
+    @Autowired
+    public KafkaProducerService producerService;
+
+
     @Transactional(propagation= Propagation.REQUIRED , isolation = Isolation.DEFAULT)
     public Message insert(Post post,Integer pubId) {
+        Map map = new HashMap();
         postMapper.insert(post);
-        List<User> subIds= userService.getSubsByPub(pubId);
-        return Message.Ok();
+        //给订阅的用户发送提醒
+        List<Integer> subIds= userService.getSubsByPub(pubId).stream().map(User::getId).collect(Collectors.toList());
+        map.put(pubId, subIds);
+        String message = JSONObject.toJSON(map).toString();
+        //提醒发布
+        Message result =producerService.sndMesForTemplate(Constant.TOPIC,message,false,null);
+        //kafka consumer 消费
+        return result;
     }
 
 //    @Autowired

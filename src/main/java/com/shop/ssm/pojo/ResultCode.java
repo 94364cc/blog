@@ -34,7 +34,23 @@ public enum  ResultCode {
     /**
      * kafka 消费报错
      */
-    KAFKA_PROCDUCE_WRONG("2001", "something wrong happends whene send messages to kafka");
+    KAFKA_PROCDUCE_WRONG("2001", "something wrong happends whene send messages to kafka"),
+
+    /**
+     * kafka 发送消息超时
+     */
+    KAFKA_SEND_TIMEOUT("2002","timeout when send message to kafka"),
+
+    /**
+     * kafka 发送没有发现偏移量
+     */
+    KAFKA_NOT_OFFSET("2003","HAVEN'T FOUND OFFSET"),
+
+    /**
+     * kafka 发送没有返回值
+     */
+    KAFKA_NOT_RESULT("2004","HAVEN'T FOUND RESULT")
+    ;
 
 
     /**

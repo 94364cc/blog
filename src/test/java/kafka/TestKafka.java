@@ -1,8 +1,10 @@
 package kafka;
 
 
-import com.sun.corba.se.impl.oa.toa.TOA;
-import kafka.admin.AdminUtilities;
+import com.alibaba.fastjson.JSONObject;
+import com.shop.ssm.pojo.User;
+import com.shop.ssm.service.FileService;
+import com.shop.ssm.utils.Constant;
 import kafka.admin.AdminUtils;
 import kafka.server.ConfigType;
 import kafka.utils.ZkUtils;
@@ -12,9 +14,10 @@ import org.apache.kafka.common.requests.MetadataResponse.*;
 import org.apache.kafka.common.security.JaasUtils;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.junit.Test;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Administrator on 2019/3/1.
@@ -136,6 +139,23 @@ public class TestKafka {
     }
     @Test
     public void queryTopicTest(){
-        queryTopic(TOPIC);
+        queryTopic(Constant.TOPIC);
+    }
+
+
+    @Test
+    public void testXmlKafka(){
+        Map map=new HashMap<>();
+        map.put("2",new ArrayList(){{
+            add("1");
+            add("2");
+            add("3");
+        }});
+        JSONObject json= (JSONObject) JSONObject.toJSON(map);
+        for(JSONObject.Entry entry:json.entrySet()){
+            String value=  entry.getValue().toString();
+            List list=Arrays.asList(value.split(","));
+            System.out.println(list);
+        }
     }
 }

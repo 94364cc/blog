@@ -43,7 +43,6 @@
       <!-- 指定范围，在测试时才会加载 -->
       <scope>test</scope>
     </dependency>
-
     <!-- 添加spring核心依赖 -->
     <dependency>
       <groupId>org.springframework</groupId>
@@ -126,11 +125,11 @@
       <artifactId>commons-dbcp</artifactId>
       <version>1.2.2</version>
     </dependency>
-    <!-- 添加fastjson -->
+    <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
     <dependency>
       <groupId>com.alibaba</groupId>
       <artifactId>fastjson</artifactId>
-      <version>1.1.41</version>
+      <version>1.2.56</version>
     </dependency>
     <!-- 添加日志相关jar包 -->
     <dependency>
@@ -219,6 +218,18 @@
       <artifactId>kafka-clients</artifactId>
       <version>0.10.1.1</version>
     </dependency>
+    <dependency>
+      <groupId> org.springframework.integration </groupId>
+      <artifactId> spring-integration-kafka </artifactId>
+      <version> 2.1.0.RELEASE </version>
+    </dependency>
+
+    <dependency>
+      <groupId> org.springframework.kafka </groupId>
+      <artifactId> spring-kafka </artifactId>
+      <version>1.1.1.RELEASE</version>
+    </dependency>
+
     <dependency>
       <groupId>org.aspectj</groupId>
       <artifactId>aspectjrt</artifactId>

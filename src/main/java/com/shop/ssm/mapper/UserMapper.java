@@ -12,6 +12,7 @@ public interface UserMapper {
     User selectOneByExample(User user);
     void updateByExampleSelective(User user);
     List<User> selectUsers(User user);
-    List<User> getSubsByPub(@Param("pubId")Integer pubId);
+    List<User> selectSubsByPub(@Param("pubId")Integer pubId);
+    List<User> selectUsersByIds(@Param("ids")List<Integer> ids);
 
 }

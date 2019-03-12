@@ -47,7 +47,6 @@ public class Util {
     }
 
     //将对象序列化
-
     public static byte[] serialize(Object object) {
         ObjectOutputStream oos = null;
         ByteArrayOutputStream baos = null;

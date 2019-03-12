@@ -17,4 +17,5 @@ public interface UserService {
     public Message delete(Integer userId);
     public Message getUsers(UserVo userVo,int page,int size);
     public List<User> getSubsByPub(Integer pubId);
+    public List<User> getUsersByIds(List<Integer> ids);
 }

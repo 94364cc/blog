@@ -10,6 +10,7 @@ import com.shop.ssm.pojo.UserVo;
 import com.shop.ssm.service.UserService;
 import com.shop.ssm.utils.Constant;
 import com.shop.ssm.utils.Util;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -21,7 +22,7 @@ import java.util.List;
  */
 @Service
 public class UserServiceImpl implements UserService {
-    @Resource
+    @Autowired
     private UserMapper userMapper;
 
     //注册
@@ -90,7 +91,11 @@ public class UserServiceImpl implements UserService {
         return Message.Ok(users);
     }
     public List<User> getSubsByPub(Integer pubId) {
-        List<User> subs=userMapper.getSubsByPub(pubId);
-        return subs;
+        return userMapper.selectSubsByPub(pubId);
+    }
+
+    //批量userIds批量查询User
+    public List<User> getUsersByIds(List<Integer> ids){
+       return userMapper.selectUsersByIds(ids);
     }
 }

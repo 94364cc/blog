@@ -13,7 +13,7 @@
     <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, user_name, nick,phone,email,create_time ,modify_time,is_delete
+    id, user_name userName, nick,phone,email,create_time createTime,modify_time modifyTime,is_delete isDelete
   </sql>
   <select id="selectByUserName" parameterType="java.lang.String" resultType="com.shop.ssm.pojo.User">
       select <include refid="Base_Column_List"></include> from USER
@@ -152,10 +152,20 @@
     </where>
   </select>
 
-  <select id="getSubsByPub" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectSubsByPub" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select b.id,user_name, nick,phone,email,create_time ,modify_time,is_delete from pub_sub a, user b
     <where>
       a.sub_id=b.id and pub_id=#{pubId,jdbcType=INTEGER}
+    </where>
+  </select>
+
+  <select id="selectUsersByIds" resultType="com.shop.ssm.pojo.User">
+    select <include refid="Base_Column_List"/> from USER
+    <where>
+        id in 
+      <foreach collection="ids" item="id" open="(" close=")" separator=",">
+        #{id,jdbcType=INTEGER}
+      </foreach>
     </where>
   </select>
 </mapper>

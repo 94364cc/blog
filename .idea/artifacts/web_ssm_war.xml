@@ -3,6 +3,13 @@
     <output-path>$PROJECT_DIR$/target</output-path>
     <root id="archive" name="web-ssm.war">
       <element id="artifact" artifact-name="web-ssm:war exploded" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="lib">
+          <element id="library" level="module" name="JUnit4" module-name="web-ssm" />
+          <element id="file-copy" path="$APPLICATION_HOME_DIR$/plugins/testng/lib/testng.jar" />
+          <element id="library" level="project" name="lib" />
+        </element>
+      </element>
     </root>
   </artifact>
 </component>

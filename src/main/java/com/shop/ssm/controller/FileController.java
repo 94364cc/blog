@@ -20,7 +20,7 @@ import java.io.*;
 @Controller
 @RequestMapping("/file")
 public class FileController {
-//    @Resource
+//    @Autowired
 //    private FileService fileService;
 //    /**
 //     * 实现上传文件

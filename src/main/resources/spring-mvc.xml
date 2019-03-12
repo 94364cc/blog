@@ -27,6 +27,8 @@
     <task:annotation-driven executor="executor" scheduler="scheduler" />
     <!--E 配置定时任务-->
 
+    <import resource="classpath:kafkaConsumer.xml" />
+    <import resource="classpath:kafkaProducer.xml" />
 
     <!--避免IE执行AJAX时，返回JSON出现下载文件 -->
   <bean id="mappingJacksonHttpMessageConverter"

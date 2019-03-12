@@ -1,6 +1,5 @@
 package com.shop.ssm.listener;
 
-import com.shop.ssm.kafka.Consumer;
 import com.shop.ssm.service.PostService;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;

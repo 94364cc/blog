@@ -24,7 +24,8 @@ public class PostController {
     @RequestMapping(value = "/post" , method = RequestMethod.POST)
     @ResponseBody
     public Message insertPost(Post post,HttpSession session){
-        Integer pubId= (Integer) session.getAttribute("userId");
+//        Integer pubId= (Integer) session.getAttribute("userId");
+        Integer pubId=2;
         return postService.insert(post,pubId);
     }
 //    @ResponseBody
