@@ -11,5 +11,7 @@ import java.util.List;
  */
 public interface PubSubService {
 
-    Message subscribe(PubSub pubSub);
+    Message subscribe(Integer pubId,Integer subId);
+    Message unsubscribe(Integer pubId,Integer subId);
+    List<Integer> getSubsByPubId(Integer pubId);
 }

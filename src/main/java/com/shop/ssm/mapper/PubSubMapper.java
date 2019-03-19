@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface PubSubMapper {
-    void subscribe(PubSub pubSub);
-    List<User> getSubsByPub(@Param("pubId")Integer pubId);
+    void subscribe(@Param("pubId")Integer pubId,@Param("subId")Integer subId);
+    void unsubscribe(@Param("pubId")Integer pubId,@Param("subId")Integer subId);
+    List<Integer> getSubsByPubId(@Param("pubId") Integer pubId);
+
 }

@@ -7,12 +7,33 @@
     <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="label" property="label" jdbcType="VARCHAR" />
     <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, user_id, title,label,content
+    id, user_id as userId, title,label,content,create_time as createTime
   </sql>
   <insert id="insert" parameterType="com.shop.ssm.pojo.Post">
-    insert into post (user_id,title,label,content) VALUES
-    (#{userId,jdbcType=INTEGER},#{title,jdbcType=VARCHAR},#{label,jdbcType=VARCHAR},#{content,jdbcType=VARCHAR})
+    insert into post (user_id,title,label,content,create_time) VALUES
+    (#{userId,jdbcType=INTEGER},#{title,jdbcType=VARCHAR},#{label,jdbcType=VARCHAR},#{content,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
   </insert>
+
+  <select id="getPosts" resultType="com.shop.ssm.pojo.Post">
+    select <include refid="Base_Column_List"/> from post
+    <where>
+      <trim prefixOverrides="and">
+        <if test="userId!=null">
+          and user_id =#{userId,jdbcType=INTEGER}
+        </if>
+        <if test="label!=null">
+          and label =#{label,jdbcType=VARCHAR}
+        </if>
+      </trim>
+    </where>
+    order by create_time DESC
+  </select>
+
+  <select id="getPostByKey" resultType="com.shop.ssm.pojo.Post">
+    select <include refid="Base_Column_List"/> from post
+    where id=#{id,jdbcType=INTEGER}
+  </select>
 </mapper>

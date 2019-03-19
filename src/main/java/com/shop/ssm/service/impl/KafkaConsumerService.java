@@ -39,5 +39,4 @@ public class KafkaConsumerService {
     public static List strToList(String str){
         return Arrays.asList(str.split(","));
     }
-
 }

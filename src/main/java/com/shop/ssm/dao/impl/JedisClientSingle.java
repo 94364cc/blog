@@ -61,6 +61,7 @@ public class JedisClientSingle implements JedisClient {
 		// TODO Auto-generated method stub
 		Jedis jedis=jedisPool.getResource();
 		Long result =jedis.expire(key, second);
+		jedis.close();
 		return result;
 	}
 
@@ -68,6 +69,7 @@ public class JedisClientSingle implements JedisClient {
 		// TODO Auto-generated method stub
 		Jedis jedis=jedisPool.getResource();
 		Long result=jedis.ttl(key);
+		jedis.close();
 		return result;
 	}
 
@@ -100,9 +102,17 @@ public class JedisClientSingle implements JedisClient {
 		return result;
 	}
 
+	public long rpush(String key, String value) {
+		Jedis jedis=jedisPool.getResource();
+		long result=jedis.rpush(key,value);
+		jedis.close();
+		return result;
+	}
+
 	public List<String> lrange(String key,long start, long end) {
 		Jedis jedis=jedisPool.getResource();
 		List<String> result=jedis.lrange(key, start , end );
+		jedis.close();
 		return result;
 	}
 
@@ -129,6 +139,7 @@ public class JedisClientSingle implements JedisClient {
 	public double zincrby(String key, double score, String value) {
 		Jedis jedis=jedisPool.getResource();
 		double result= jedis.zincrby(key, score, value);
+		jedis.close();
 		return result;
 	}
 
@@ -141,6 +152,7 @@ public class JedisClientSingle implements JedisClient {
 	public long publish(String channel, String message) {
 		Jedis jedis=jedisPool.getResource();
 		long result =jedis.publish(channel,message);
+		jedis.close();
 		return result;
 	}
 
@@ -152,7 +164,23 @@ public class JedisClientSingle implements JedisClient {
 
 	public Set keys(String pattern) {
 		Jedis jedis =jedisPool.getResource();
-		return jedis.keys(pattern);
+		Set result= jedis.keys(pattern);
+		jedis.close();
+		return result;
+	}
+
+	@Override
+	public void flushall() {
+		Jedis jedis =jedisPool.getResource();
+		jedis.flushAll();
+		jedis.close();
+	}
+
+	@Override
+	public void srem(String key,String... members) {
+		Jedis jedis =jedisPool.getResource();
+		jedis.srem(key,members);
+		jedis.close();
 	}
 
 }

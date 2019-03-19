@@ -32,11 +32,6 @@ public enum  ResultCode {
      */
     PASSWORD_INVAILD("1006", "password must include word and number!"),
     /**
-     * kafka 消费报错
-     */
-    KAFKA_PROCDUCE_WRONG("2001", "something wrong happends whene send messages to kafka"),
-
-    /**
      * kafka 发送消息超时
      */
     KAFKA_SEND_TIMEOUT("2002","timeout when send message to kafka"),

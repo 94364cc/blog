@@ -21,6 +21,7 @@ public interface JedisClient {
     long hdel(String heky,String key);
     void setObject(String key,Object object);
     long lpush(String key,String value);
+    long rpush(String key,String value);
     List<String> lrange(String key,long start,long end);
     long sadd(String key,String value);
     List<String> brpop(String key,int time);
@@ -30,6 +31,8 @@ public interface JedisClient {
     long publish(String channel,String message);
     void subscribe(JedisPubSub listener,String channel);
     Set keys(String pattern);
+    void flushall();
+    void srem(String key,String... members);
 
 
 }

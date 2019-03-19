@@ -1,19 +1,10 @@
 package com.shop.ssm.pojo;
 
 public class PubSub {
-    private Integer id;
 
     private Integer pubId;
 
     private Integer subId;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public Integer getPubId() {
         return pubId;

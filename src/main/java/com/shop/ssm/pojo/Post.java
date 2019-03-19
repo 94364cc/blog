@@ -1,5 +1,7 @@
 package com.shop.ssm.pojo;
 
+import java.util.Date;
+
 public class Post {
     private Integer id;
 
@@ -10,6 +12,26 @@ public class Post {
     private String label;
 
     private String content;
+
+    private Date createTime;
+
+    public Post() {
+    }
+    public Post(Integer id, Integer userId, String title, String label, String content,Date createTime) {
+        this.id = id;
+        this.userId = userId;
+        this.title = title;
+        this.label = label;
+        this.content = content;
+        this.createTime=new Date();
+    }
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 
     public Integer getId() {
         return id;

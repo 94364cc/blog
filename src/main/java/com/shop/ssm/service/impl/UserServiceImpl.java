@@ -1,5 +1,6 @@
 package com.shop.ssm.service.impl;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.shop.ssm.controller.BusinessRuntimeException;
 import com.shop.ssm.mapper.UserMapper;
@@ -90,8 +91,10 @@ public class UserServiceImpl implements UserService {
         List<User> users=userMapper.selectUsers(userVo);
         return Message.Ok(users);
     }
-    public List<User> getSubsByPub(Integer pubId) {
-        return userMapper.selectSubsByPub(pubId);
+    public Message getSubsByPub(Integer pubId,int page,int size) {
+        PageHelper.startPage(page,size);
+        List<User> result=userMapper.selectSubsByPub(pubId);
+        return Message.Ok(result);
     }
 
     //批量userIds批量查询User

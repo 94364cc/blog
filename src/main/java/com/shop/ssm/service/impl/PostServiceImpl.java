@@ -1,11 +1,14 @@
 package com.shop.ssm.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.shop.ssm.dao.JedisClient;
 import com.shop.ssm.mapper.PostMapper;
 import com.shop.ssm.pojo.Message;
 import com.shop.ssm.pojo.Post;
+import com.shop.ssm.pojo.PubSub;
 import com.shop.ssm.pojo.User;
 import com.shop.ssm.service.PostService;
+import com.shop.ssm.service.PubSubService;
 import com.shop.ssm.service.UserService;
 import com.shop.ssm.utils.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +18,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -31,6 +32,8 @@ public class PostServiceImpl implements PostService {
     public PostMapper postMapper;
     @Autowired
     public UserService userService;
+    @Autowired
+    public PubSubService pubSubService;
 
     @Autowired
     public KafkaProducerService producerService;
@@ -41,28 +44,30 @@ public class PostServiceImpl implements PostService {
         Map map = new HashMap();
         postMapper.insert(post);
         //给订阅的用户发送提醒
-        List<Integer> subIds= userService.getSubsByPub(pubId).stream().map(User::getId).collect(Collectors.toList());
+        List<Integer> subIds= pubSubService.getSubsByPubId(pubId);
         map.put(pubId, subIds);
         String message = JSONObject.toJSON(map).toString();
         //提醒发布
-        Message result =producerService.sndMesForTemplate(Constant.TOPIC,message,false,null);
-        //kafka consumer 消费
-        return result;
+        return producerService.sndMesForTemplate(Constant.TOPIC,message,false,null);
     }
 
-//    @Autowired
-//    public JedisClient jedisClient;
+    @Autowired
+    public JedisClient jedisClient;
 //    @Autowired
 //    public RedisMsgPubSubListener listener;
-
-//
-//    String POST_PREFIEW="post:";
-//    String TAG_PREFIEW="tag:";
-//    String POST_LATER=":post";
-//    String POST_LIST="post:list";
-//    String POST_SORT_LIST="post:sort:list";
-//    String POST_EMAIL="post:email";
-//    String SUBSCRIBE="subscribe:";
+    String POST_PREFIEW="post:";
+    String TAG_PREFIEW="tag:";
+    String POST_LATER=":post";
+    String POST_LIST="postList";
+    String POST_SORT_LIST="post:sort:list";
+    String POST_EMAIL="post:email";
+    int EXPIRE_SEC=3600;
+    String ID="id";
+    String USERID="userId";
+    String TITLE="title";
+    String LABEL="label";
+    String CONTENT="content";
+    String CREATETIME="createTime";
 //    //存储文章的访问量
 //    public void ViewCount(String postId) {
 //        String count;
@@ -90,26 +95,26 @@ public class PostServiceImpl implements PostService {
 //        return Message.ok();
 //    }
 //
-//    //采用hash来存储post对象(修改)
-//    //好处:修改或查询某个属性不用反序列化，然后再取，占用资源少
-//    public Message addHashPost(Post post) {
-//        postMapper.insert(post);
-//        //不等于null说明存储成功,将增加的结果写入redis
-//        if(post.getId()!=null){
-//            Integer postId=post.getId();
-//            jedisClient.hset(POST_PREFIEW+postId,"id",postId+"");
-//            jedisClient.hset(POST_PREFIEW+postId,"userId",post.getUserId()+"");
-//            jedisClient.hset(POST_PREFIEW+postId,"title",post.getTitle());
-//            jedisClient.hset(POST_PREFIEW+postId,"block",post.getBlock());
-//            jedisClient.hset(POST_PREFIEW+postId,"content",post.getContent());
-//            //有序存储postId,方便顺序查找
-//            jedisClient.lpush(POST_LIST, postId + "");
-//            //实现根据block查找想关的post
-//            String block=post.getBlock();
-//            List<String> blocks= Arrays.asList(block.split(","));
-//            for (String str:blocks){
-//                jedisClient.sadd(TAG_PREFIEW+str+POST_LATER,postId+"");
-//            }
+    //采用hash来存储post对象(修改)
+    //好处:修改或查询某个属性不用反序列化，然后再取，占用资源少
+    public Message addHashPost(Post post) {
+        postMapper.insert(post);
+        //不等于null说明存储成功,将增加的结果写入redis
+        if (post.getId() != null) {
+            Integer postId = post.getId();
+            jedisClient.hset(POST_PREFIEW + postId, "id", postId + "");
+            jedisClient.hset(POST_PREFIEW + postId, "userId", post.getUserId() + "");
+            jedisClient.hset(POST_PREFIEW + postId, "title", post.getTitle());
+            jedisClient.hset(POST_PREFIEW + postId, "block", post.getLabel());
+            jedisClient.hset(POST_PREFIEW + postId, "content", post.getContent());
+            //有序存储postId,方便顺序查找
+            jedisClient.lpush(POST_LIST, postId + "");
+            //实现根据block查找想关的post
+            String block = post.getLabel();
+            List<String> blocks = Arrays.asList(block.split(","));
+            for (String str : blocks) {
+                jedisClient.sadd(TAG_PREFIEW + str + POST_LATER, postId + "");
+            }
 //            //发布订阅模式
 ////            Set<String> subKey = jedisClient.keys(SUBSCRIBE + post.getUserId());
 ////            if(!subKey.isEmpty()){
@@ -125,39 +130,55 @@ public class PostServiceImpl implements PostService {
 ////                    listener.unsubscribe();
 ////                }
 ////            }
-//    }
-//    return Message.ok();
-//    }
-//
-//    /*
-//    单挑访问post
-//    * */
-//    public Post queryPost(String postId) {
-//        Integer id=Integer.parseInt(jedisClient.hget(POST_PREFIEW + postId,"id"));
-//        Integer userId=Integer.parseInt(jedisClient.hget(POST_PREFIEW + postId, "userId"));
-//        String title=jedisClient.hget(POST_PREFIEW+postId,"title");
-//        String block=jedisClient.hget(POST_PREFIEW+postId,"block");
-//        String content=jedisClient.hget(POST_PREFIEW+postId,"content");
-//
-//        //每次查一次，访问加1
-//        jedisClient.zincrby(POST_SORT_LIST,new Double(1),postId);
-//        return new Post(id,userId,title,block,content);
-//    }
-//
-//    /*
-//    有序查找列表（可以用sorted set 来代替，这样可以实现用时间排序，查找某个月的post）
-//    * */
-//    public List<Post> queryPostList(Integer pageSize,Integer page) {
-//        //计算start end
-//        long start =(page-1)*pageSize;
-//        long end = page*pageSize-1;
-//        List<String> postIds= jedisClient.lrange(POST_LIST,start,end);
-//        List<Post> result=new ArrayList<Post>();
-//        for(String postId:postIds){
-//            result.add(queryPost(postId));
-//        }
-//        return result;
-//    }
+        }
+        return Message.Ok();
+    }
+
+    /*
+    单条访问post
+    * */
+    public Post getPost(Integer postId) {
+        Post post=null;
+        //查询缓存是否存在
+        String id=jedisClient.hget(POST_PREFIEW + postId, "id");
+        if(id!=null){
+            post=redisGet(postId);
+            return post;
+        }
+        post=postMapper.getPostByKey(postId);
+        //填充缓存
+        redisPut(post);
+        return post;
+        //每次查一次，访问加1
+//        jedisClient.zincrby(POST_SORT_LIST,new Double(1),postId+"");
+    }
+
+    /*
+    有序查找列表（可以用sorted set 来代替，这样可以实现用时间排序，查找某个月的post）
+    * */
+    public Message getPosts(Post post,Integer pageSize,Integer page) {
+        List<String> subIds=new ArrayList<String>();
+        List<Post> result=new ArrayList<Post>();
+        //首先判断是否存在缓存
+        if(jedisClient.keys(POST_LIST+"*").size()==0){
+            //查询所有的数据(按照时间倒序)
+             List<Post> posts= postMapper.getPosts(post);
+            //填充缓存
+            for (int i = 0; i <posts.size() ; i++) {
+                Post p=posts.get(i);
+                redisPut(p);
+                //将id存到list里面留备分页查询
+                jedisClient.rpush(POST_LIST, p.getId() +"");
+            }
+        }
+        long start =(page-1)*pageSize;
+        long end = page*pageSize-1;
+        subIds= jedisClient.lrange(POST_LIST,start,end);
+        for (int i = 0; i <subIds.size() ; i++) {
+            result.add(getPost(Integer.valueOf(subIds.get(i))));
+        }
+        return Message.Ok(result);
+    }
 //
 //    //添加邮箱到集合中，待会去发邮件
 //    public Message addEmail(String email){
@@ -174,13 +195,33 @@ public class PostServiceImpl implements PostService {
 //        }
 //    }
 //
-//    //订阅
-//    public Message subscribe(String writerId,String readId){
-//        //将订阅关系存储在set中
-//        jedisClient.sadd(SUBSCRIBE+writerId,readId);
-//        return Message.ok();
-//    }
 
 
+
+    //redis 新增
+    public void redisPut(Post post){
+        Integer postId=post.getId();
+        jedisClient.hset(POST_PREFIEW+postId,ID,postId+"");
+        jedisClient.hset(POST_PREFIEW+postId,USERID,post.getUserId()+"");
+        jedisClient.hset(POST_PREFIEW+postId,TITLE,post.getTitle());
+        jedisClient.hset(POST_PREFIEW+postId,LABEL,post.getLabel());
+        jedisClient.hset(POST_PREFIEW+postId,CONTENT,post.getContent());
+        jedisClient.hset(POST_PREFIEW+postId,CREATETIME,post.getCreateTime()+"");
+        //设置过期时间
+        jedisClient.expire(POST_PREFIEW+postId,EXPIRE_SEC);
+    }
+
+    //redis 查询
+    public Post redisGet(Integer postId){
+        Integer id=Integer.parseInt(jedisClient.hget(POST_PREFIEW + postId,ID));
+        Integer userId=Integer.parseInt(jedisClient.hget(POST_PREFIEW + postId, USERID));
+        String title=jedisClient.hget(POST_PREFIEW+postId,TITLE);
+        String label=jedisClient.hget(POST_PREFIEW+postId,LABEL);
+        String content=jedisClient.hget(POST_PREFIEW+postId,CONTENT);
+        String createTime=jedisClient.hget(POST_PREFIEW+postId,CREATETIME);
+        //刷新过期时间
+        jedisClient.expire(POST_PREFIEW+postId,EXPIRE_SEC);
+        return new Post(id,userId,title,label,content,new Date());
+    }
 
 }

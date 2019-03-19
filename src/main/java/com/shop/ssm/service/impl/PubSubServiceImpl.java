@@ -1,5 +1,7 @@
 package com.shop.ssm.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.shop.ssm.dao.JedisClient;
 import com.shop.ssm.mapper.PubSubMapper;
 import com.shop.ssm.pojo.Message;
 import com.shop.ssm.pojo.PubSub;
@@ -18,13 +20,28 @@ public class PubSubServiceImpl implements PubSubService{
 
     @Autowired
     public PubSubMapper pubSubMapper;
+    @Autowired
+    public JedisClient jedisClient;
+    public String SUBSCRIBE="subscribe";
 
-    public Message subscribe(PubSub pubSub) {
-        pubSubMapper.subscribe(pubSub);
+    /**
+     * 订阅
+     * @param pubId
+     * @param subId
+     * @return
+     */
+    public Message subscribe(Integer pubId,Integer subId) {
+        pubSubMapper.subscribe(pubId,subId);
+        jedisClient.sadd(SUBSCRIBE+pubId,subId.toString());
         return Message.Ok();
     }
 
-
-
-
+    public Message unsubscribe(Integer pubId,Integer subId){
+        pubSubMapper.unsubscribe(pubId, subId);
+        jedisClient.srem(SUBSCRIBE+pubId,subId.toString());
+        return Message.Ok();
+    }
+    public List<Integer> getSubsByPubId(Integer pubId){
+        return pubSubMapper.getSubsByPubId(pubId);
+    }
 }
